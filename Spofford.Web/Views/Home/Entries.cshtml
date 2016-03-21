@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "Entries";
+}
+
+<div class="container">
+    <div ng-controller="EntriesController as vm">
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Entry #</th>
+                        <th>Name</th>
+                        <th>Teams</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="entry in vm.entries">
+                        <td>{{ entry.EntryID }}</td>
+                        <td>{{ entry.Player.Name }}</td>
+                        <td>
+                            <ul class="list-inline">
+                                <li class="list-group-item" ng-repeat="team in entry.Teams">
+                                    <img class="teamIcon" ng-src="{{ team.Image }}" alt="{{ team.Name }}" />
+                                {{ team.Name }}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-push-8">
+                <span class="label label-danger">Seed Count: {{ vm.seedCount }}</span>
+                <br />
+                <br />
+                <div class="well">
+                    <ul ng-repeat="team in vm.entry.Teams" class="list-group">
+                        <li class="list-group-item">
+                            {{ team.Name }} ({{ team.Seed }})
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8 col-md-pull-4">
+                <form name="entryForm" class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="player" class="col-sm-2 control-label">Player</label>
+                            <div class="col-sm-10">
+                                <select id="player" name="player" class="form-control" ng-model="vm.entry.Player" ng-options="player.Name for player in vm.players track by player.PlayerID">
+                                    <option value="">-- Select Player --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Year</label>
+                            <div class="col-sm-10">
+                                <input name="yearTxt" class="form-control" type="text" ng-model="vm.entry.Year" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="teams" class="col-sm-2 control-label">Teams</label>
+                            <div class="col-sm-10">
+                                <div id ="teams" class="teamsContainer">
+                                    <div class="list-group">
+                                        <a href="" class="list-group-item" ng-repeat="team in vm.teams" ng-click="vm.teamChange(team)">
+                                            <table class="table">
+                                                <thead>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="">
+                                                        <td class="">
+                                                            <div class="">
+                                                                <img class="teamIcon" ng-src="{{ team.Image }}" alt="{{ team.Name }}" />
+                                                            </div>
+                                                        </td>
+                                                        <td class="">
+                                                            {{ team.Name }} ({{ team.Seed }} )
+                                                        </td>
+                                                        <td class="pick">
+                                                            <span><i ng-class="vm.entry.Teams.indexOf(team) === -1 ? 'fa fa-circle-o fa-2x fa-fw' : 'fa fa-check-circle fa-2x fa-fw'"></i>&nbsp;</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <button type="submit" ng-click="vm.addEntry()">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section styles
+{
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="http://localhost:7858/Content/Site.css" />
+}
+
+@section scripts
+{
+    <script src="https://cdn.rawgit.com/angular-ui/ui-router/0.2.18/release/angular-ui-router.js"></script>
+    <script src="http://localhost:7858/Scripts/app/app.js"></script>
+}
+
